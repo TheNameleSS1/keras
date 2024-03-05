@@ -6,6 +6,7 @@ Last modified: 2022/09/10
 Description: Similarity learning using a siamese network trained with a contrastive loss.
 Accelerator: GPU
 """
+import secrets
 
 """
 ## Introduction
@@ -23,8 +24,6 @@ the class segmentation of the training inputs.
 """
 ## Setup
 """
-
-import random
 import numpy as np
 import keras
 from keras import ops
@@ -96,18 +95,18 @@ def make_pairs(x, y):
         # add a matching example
         x1 = x[idx1]
         label1 = y[idx1]
-        idx2 = random.choice(digit_indices[label1])
+        idx2 = secrets.SystemRandom().choice(digit_indices[label1])
         x2 = x[idx2]
 
         pairs += [[x1, x2]]
         labels += [0]
 
         # add a non-matching example
-        label2 = random.randint(0, num_classes - 1)
+        label2 = secrets.SystemRandom().randint(0, num_classes - 1)
         while label2 == label1:
-            label2 = random.randint(0, num_classes - 1)
+            label2 = secrets.SystemRandom().randint(0, num_classes - 1)
 
-        idx2 = random.choice(digit_indices[label2])
+        idx2 = secrets.SystemRandom().choice(digit_indices[label2])
         x2 = x[idx2]
 
         pairs += [[x1, x2]]

@@ -1,9 +1,9 @@
 import os
-import random
 import string
 
 from keras import testing
 from keras.utils import text_dataset_utils
+import secrets
 
 
 class TextDatasetFromDirectoryTest(testing.TestCase):
@@ -37,7 +37,7 @@ class TextDatasetFromDirectoryTest(testing.TestCase):
             filename = os.path.join(path, f"text_{i}.txt")
             with open(os.path.join(temp_dir, filename), "w") as f:
                 text = "".join(
-                    [random.choice(string.printable) for _ in range(length)]
+                    [secrets.SystemRandom().choice(string.printable) for _ in range(length)]
                 )
                 f.write(text)
         return temp_dir
@@ -50,7 +50,7 @@ class TextDatasetFromDirectoryTest(testing.TestCase):
             filename = f"text_{i}.txt"
             with open(os.path.join(directory, filename), "w") as f:
                 text = "".join(
-                    [random.choice(string.printable) for _ in range(20)]
+                    [secrets.SystemRandom().choice(string.printable) for _ in range(20)]
                 )
                 f.write(text)
 

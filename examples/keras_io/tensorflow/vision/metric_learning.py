@@ -6,6 +6,8 @@ Last modified: 2020/06/09
 Description: Example of using similarity metric learning on CIFAR-10 images.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Overview
 
@@ -28,8 +30,6 @@ Set Keras backend to tensorflow.
 """
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
-
-import random
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -136,10 +136,10 @@ class AnchorPositivePairs(keras.utils.Sequence):
         x = np.empty((2, num_classes, height_width, height_width, 3), dtype=np.float32)
         for class_idx in range(num_classes):
             examples_for_class = class_idx_to_train_idxs[class_idx]
-            anchor_idx = random.choice(examples_for_class)
-            positive_idx = random.choice(examples_for_class)
+            anchor_idx = secrets.SystemRandom().choice(examples_for_class)
+            positive_idx = secrets.SystemRandom().choice(examples_for_class)
             while positive_idx == anchor_idx:
-                positive_idx = random.choice(examples_for_class)
+                positive_idx = secrets.SystemRandom().choice(examples_for_class)
             x[0, class_idx] = x_train[anchor_idx]
             x[1, class_idx] = x_train[positive_idx]
         return x
