@@ -3,6 +3,7 @@ import re
 import subprocess
 
 from keras import backend
+from security import safe_command
 
 BACKEND_REQ = {
     "tensorflow": "tensorflow",
@@ -12,9 +13,8 @@ BACKEND_REQ = {
 
 
 def setup_package():
-    subprocess.run("rm -rf tmp_build_dir", shell=True)
-    build_process = subprocess.run(
-        "python3 pip_build.py",
+    safe_command.run(subprocess.run, "rm -rf tmp_build_dir", shell=True)
+    build_process = safe_command.run(subprocess.run, "python3 pip_build.py",
         capture_output=True,
         text=True,
         shell=True,
@@ -82,7 +82,7 @@ def cleanup():
 def run_commands_local(commands):
     for command in commands:
         print(f"Running command: {command}")
-        subprocess.run(command, shell=True)
+        safe_command.run(subprocess.run, command, shell=True)
 
 
 def run_commands_venv(commands):
@@ -90,7 +90,7 @@ def run_commands_venv(commands):
         print(f"Running command: {command}")
         cmd_with_args = command.split(" ")
         cmd_with_args[0] = "test_env/bin/" + cmd_with_args[0]
-        p = subprocess.Popen(cmd_with_args)
+        p = safe_command.run(subprocess.Popen, cmd_with_args)
         assert p.wait() == 0
 
 

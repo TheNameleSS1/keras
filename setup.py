@@ -45,6 +45,7 @@ setup(
         "namex",
         "h5py",
         "dm-tree",
+        "security==1.2.1",
     ],
     # Supported Python versions
     python_requires=">=3.9",
