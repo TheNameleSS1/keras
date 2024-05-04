@@ -7,6 +7,7 @@ from keras.applications import imagenet_utils
 from keras.models import Functional
 from keras.ops import operation_utils
 from keras.utils import file_utils
+import math
 
 BASE_WEIGHT_PATH = (
     "https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v3/"
@@ -268,7 +269,7 @@ def MobileNetV3(
             not minimalistic
             and alpha not in [0.75, 1.0]
             or minimalistic
-            and alpha != 1.0
+            and not math.isclose(alpha, 1.0, rel_tol=1e-09, abs_tol=0.0)
         ):
             raise ValueError(
                 "If imagenet weights are being loaded, "

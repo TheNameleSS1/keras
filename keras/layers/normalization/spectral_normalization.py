@@ -4,6 +4,7 @@ from keras.api_export import keras_export
 from keras.layers import Wrapper
 from keras.layers.input_spec import InputSpec
 from keras.utils.numerical_utils import normalize
+import math
 
 
 @keras_export("keras.layers.SpectralNormalization")
@@ -95,7 +96,7 @@ class SpectralNormalization(Wrapper):
         vector_u = self.vector_u
 
         # check for zeroes weights
-        if not all([w == 0.0 for w in weights]):
+        if not all([math.isclose(w, 0.0, rel_tol=1e-09, abs_tol=0.0) for w in weights]):
             for _ in range(self.power_iterations):
                 vector_v = normalize(
                     ops.matmul(vector_u, ops.transpose(weights)), axis=None

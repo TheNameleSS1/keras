@@ -7,6 +7,8 @@ Last modified: 2023/07/19
 Description: Training a keypoint detector with data augmentation and transfer learning.
 Accelerator: GPU
 """
+import math
+
 """
 Keypoint detection consists of locating key object parts. For example, the key parts
 of our faces include nose tips, eyebrows, eye corners, and so on. These parts help to
@@ -377,8 +379,8 @@ print(f"Total batches in training set: {len(train_dataset)}")
 print(f"Total batches in validation set: {len(validation_dataset)}")
 
 sample_images, sample_keypoints = next(iter(train_dataset))
-assert sample_keypoints.max() == 1.0
-assert sample_keypoints.min() == 0.0
+assert math.isclose(sample_keypoints.max(), 1.0, rel_tol=1e-09, abs_tol=0.0)
+assert math.isclose(sample_keypoints.min(), 0.0, rel_tol=1e-09, abs_tol=0.0)
 
 sample_keypoints = sample_keypoints[:4].reshape(-1, 24, 2) * IMG_SIZE
 visualize_keypoints(sample_images[:4], sample_keypoints)

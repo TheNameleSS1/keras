@@ -6,6 +6,7 @@ Last modified: 2020/06/02
 Description: How to obtain integrated gradients for a classification model.
 Accelerator: NONE
 """
+import math
 
 """
 ## Integrated Gradients
@@ -259,7 +260,7 @@ class GradVisualizer:
         return transformed_attributions
 
     def get_thresholded_attributions(self, attributions, percentage):
-        if percentage == 100.0:
+        if math.isclose(percentage, 100.0, rel_tol=1e-09, abs_tol=0.0):
             return np.min(attributions)
 
         # 1. Flatten the attributions

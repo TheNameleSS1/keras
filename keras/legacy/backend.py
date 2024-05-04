@@ -7,6 +7,7 @@ import numpy as np
 from keras import backend
 from keras.api_export import keras_export
 from keras.utils.module_utils import tensorflow as tf
+import math
 
 py_any = any
 py_all = all
@@ -1271,7 +1272,7 @@ def relu(x, alpha=0.0, max_value=None, threshold=0.0):
     # numpy arrays, lists, tuples are passed as well.
     # lists, tuples do not have 'dtype' attribute.
     dtype = getattr(x, "dtype", backend.floatx())
-    if alpha != 0.0:
+    if not math.isclose(alpha, 0.0, rel_tol=1e-09, abs_tol=0.0):
         if max_value is None and threshold == 0:
             return tf.nn.leaky_relu(x, alpha=alpha)
 
@@ -1297,7 +1298,7 @@ def relu(x, alpha=0.0, max_value=None, threshold=0.0):
         zero = tf.convert_to_tensor(0, dtype=x.dtype)
         x = tf.clip_by_value(x, zero, max_value)
 
-    if alpha != 0.0:
+    if not math.isclose(alpha, 0.0, rel_tol=1e-09, abs_tol=0.0):
         alpha = tf.convert_to_tensor(alpha, dtype=x.dtype)
         x -= alpha * negative_part
     return x

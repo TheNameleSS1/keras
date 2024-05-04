@@ -7,6 +7,7 @@ from keras.applications import imagenet_utils
 from keras.models import Functional
 from keras.ops import operation_utils
 from keras.utils import file_utils
+import math
 
 BASE_WEIGHT_PATH = (
     "https://storage.googleapis.com/tensorflow/keras-applications/mobilenet/"
@@ -241,11 +242,11 @@ def MobileNet(
 
     # Load weights.
     if weights == "imagenet":
-        if alpha == 1.0:
+        if math.isclose(alpha, 1.0, rel_tol=1e-09, abs_tol=0.0):
             alpha_text = "1_0"
-        elif alpha == 0.75:
+        elif math.isclose(alpha, 0.75, rel_tol=1e-09, abs_tol=0.0):
             alpha_text = "7_5"
-        elif alpha == 0.50:
+        elif math.isclose(alpha, 0.50, rel_tol=1e-09, abs_tol=0.0):
             alpha_text = "5_0"
         else:
             alpha_text = "2_5"
