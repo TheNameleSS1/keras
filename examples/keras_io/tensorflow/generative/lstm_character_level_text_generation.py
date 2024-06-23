@@ -6,6 +6,8 @@ Last modified: 2020/04/30
 Description: Generate text from Nietzsche's writings with a character-level LSTM.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Introduction
 
@@ -29,7 +31,6 @@ import keras
 from keras import layers
 
 import numpy as np
-import random
 import io
 
 """
@@ -109,7 +110,7 @@ for epoch in range(epochs):
     print()
     print("Generating text after epoch: %d" % epoch)
 
-    start_index = random.randint(0, len(text) - maxlen - 1)
+    start_index = secrets.SystemRandom().randint(0, len(text) - maxlen - 1)
     for diversity in [0.2, 0.5, 1.0, 1.2]:
         print("...Diversity:", diversity)
 

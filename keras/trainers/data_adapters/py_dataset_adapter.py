@@ -1,6 +1,5 @@
 import multiprocessing
 import queue
-import random
 import threading
 import time
 import warnings
@@ -13,6 +12,7 @@ import tree
 from keras.api_export import keras_export
 from keras.trainers.data_adapters import data_adapter_utils
 from keras.trainers.data_adapters.data_adapter import DataAdapter
+import secrets
 
 
 @keras_export(["keras.utils.PyDataset", "keras.utils.Sequence"])
@@ -257,7 +257,7 @@ class PyDatasetAdapter(DataAdapter):
                 if self.shuffle:
                     # Match the shuffle convention in OrderedEnqueuer.
                     order = list(order)
-                    random.shuffle(order)
+                    secrets.SystemRandom().shuffle(order)
 
                 for i in order:
                     yield self.py_dataset[i]
@@ -524,7 +524,7 @@ class OrderedEnqueuer(PyDatasetEnqueuer):
         """Submits request to the executor and queue the `Future` objects."""
         indices = list(range(len(self.py_dataset)))
         if self.shuffle:
-            random.shuffle(indices)
+            secrets.SystemRandom().shuffle(indices)
         self._send_py_dataset()  # Share the initial py_dataset
         while True:
             with closing(self.executor_fn(_SHARED_SEQUENCES)) as executor:

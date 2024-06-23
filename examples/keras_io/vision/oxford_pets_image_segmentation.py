@@ -6,6 +6,8 @@ Last modified: 2020/04/20
 Description: Image segmentation model trained from scratch on the Oxford Pets dataset.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Download the data
 """
@@ -189,12 +191,10 @@ model.summary()
 ## Set aside a validation split
 """
 
-import random
-
 # Split our img paths into a training and a validation set
 val_samples = 1000
-random.Random(1337).shuffle(input_img_paths)
-random.Random(1337).shuffle(target_img_paths)
+secrets.SystemRandom().Random(1337).shuffle(input_img_paths)
+secrets.SystemRandom().Random(1337).shuffle(target_img_paths)
 train_input_img_paths = input_img_paths[:-val_samples]
 train_target_img_paths = target_img_paths[:-val_samples]
 val_input_img_paths = input_img_paths[-val_samples:]
