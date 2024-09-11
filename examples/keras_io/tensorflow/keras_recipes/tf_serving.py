@@ -130,7 +130,7 @@ transformations on top of the model outputs:
 
 # Download human-readable labels for ImageNet.
 imagenet_labels_url = "https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt"
-response = requests.get(imagenet_labels_url)
+response = requests.get(imagenet_labels_url, timeout=60)
 # Skiping backgroung class
 labels = [x for x in response.text.split("\n") if x != ""][1:]
 # Convert the labels to the TensorFlow data format
@@ -148,7 +148,7 @@ def postprocess(prediction, labels=tf_labels):
 Now let's download a banana picture and see how everything comes together.
 """
 
-response = requests.get("https://i.imgur.com/j9xCCzn.jpeg", stream=True)
+response = requests.get("https://i.imgur.com/j9xCCzn.jpeg", stream=True, timeout=60)
 
 with open("banana.jpeg", "wb") as f:
     shutil.copyfileobj(response.raw, f)
@@ -330,7 +330,7 @@ url = "http://localhost:8501/v1/models/model:predict"
 
 
 def predict_rest(json_data, url):
-    json_response = requests.post(url, data=json_data)
+    json_response = requests.post(url, data=json_data, timeout=60)
     response = json.loads(json_response.text)
     rest_outputs = np.array(response["predictions"])
     return rest_outputs
