@@ -1,10 +1,10 @@
-import random
 
 import numpy as np
 
 from keras import backend
 from keras.api_export import keras_export
 from keras.utils.module_utils import tensorflow as tf
+import secrets
 
 
 @keras_export("keras.utils.set_random_seed")
@@ -41,7 +41,7 @@ def set_random_seed(seed):
             "Expected `seed` argument to be an integer. "
             f"Received: seed={seed} (of type {type(seed)})"
         )
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     if tf.available:
         tf.random.set_seed(seed)

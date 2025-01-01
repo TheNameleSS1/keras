@@ -6,6 +6,7 @@ Last modified: 2022/08/27
 Description: Pretraining BERT using Hugging Face Transformers on NSP and MLM.
 Accelerator: GPU
 """
+import secrets
 
 """
 ## Introduction
@@ -81,7 +82,6 @@ pip install nltk
 """
 
 import nltk
-import random
 import logging
 
 import keras
@@ -286,8 +286,8 @@ def prepare_train_features(examples):
         # `block_size` is a hard limit.
         target_seq_length = max_num_tokens
 
-        if random.random() < SHORT_SEQ_PROB:
-            target_seq_length = random.randint(2, max_num_tokens)
+        if secrets.SystemRandom().random() < SHORT_SEQ_PROB:
+            target_seq_length = secrets.SystemRandom().randint(2, max_num_tokens)
 
         while i < len(document):
             segment = document[i]
@@ -299,7 +299,7 @@ def prepare_train_features(examples):
                     # (first) sentence.
                     a_end = 1
                     if len(current_chunk) >= 2:
-                        a_end = random.randint(1, len(current_chunk) - 1)
+                        a_end = secrets.SystemRandom().randint(1, len(current_chunk) - 1)
 
                     tokens_a = []
                     for j in range(a_end):
@@ -307,7 +307,7 @@ def prepare_train_features(examples):
 
                     tokens_b = []
 
-                    if len(current_chunk) == 1 or random.random() < NSP_PROB:
+                    if len(current_chunk) == 1 or secrets.SystemRandom().random() < NSP_PROB:
                         is_random_next = True
                         target_b_length = target_seq_length - len(tokens_a)
 
@@ -316,8 +316,7 @@ def prepare_train_features(examples):
                         # the random document is not the same as the document
                         # we're processing.
                         for _ in range(10):
-                            random_document_index = random.randint(
-                                0, len(examples["tokenized_sentences"]) - 1
+                            random_document_index = secrets.SystemRandom().randint(0, len(examples["tokenized_sentences"]) - 1
                             )
                             if random_document_index != doc_index:
                                 break
@@ -325,7 +324,7 @@ def prepare_train_features(examples):
                         random_document = examples["tokenized_sentences"][
                             random_document_index
                         ]
-                        random_start = random.randint(0, len(random_document) - 1)
+                        random_start = secrets.SystemRandom().randint(0, len(random_document) - 1)
                         for j in range(random_start, len(random_document)):
                             tokens_b.extend(random_document[j])
                             if len(tokens_b) >= target_b_length:

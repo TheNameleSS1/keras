@@ -6,6 +6,8 @@ Last modified: 2020/05/29
 Description: Implement a miniature version of GPT and train it to generate text.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Introduction
 
@@ -49,7 +51,6 @@ from keras.layers import TextVectorization
 import numpy as np
 import os
 import string
-import random
 import tensorflow
 import tensorflow.data as tf_data
 import tensorflow.strings as tf_strings
@@ -185,7 +186,7 @@ for dir in directories:
 print(f"{len(filenames)} files")
 
 # Create a dataset from text files
-random.shuffle(filenames)
+secrets.SystemRandom().shuffle(filenames)
 text_ds = tf_data.TextLineDataset(filenames)
 text_ds = text_ds.shuffle(buffer_size=256)
 text_ds = text_ds.batch(batch_size)

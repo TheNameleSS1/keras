@@ -1,5 +1,4 @@
 import os
-import random
 import time
 import warnings
 from multiprocessing.pool import ThreadPool
@@ -9,6 +8,7 @@ import numpy as np
 from keras.api_export import keras_export
 from keras.utils import io_utils
 from keras.utils.module_utils import tensorflow as tf
+import secrets
 
 
 @keras_export("keras.utils.split_dataset")
@@ -69,9 +69,9 @@ def split_dataset(
 
     if shuffle:
         if seed is None:
-            seed = random.randint(0, int(1e6))
-        random.seed(seed)
-        random.shuffle(dataset_as_list)
+            seed = secrets.SystemRandom().randint(0, int(1e6))
+        secrets.SystemRandom().seed(seed)
+        secrets.SystemRandom().shuffle(dataset_as_list)
 
     total_length = len(dataset_as_list)
 
