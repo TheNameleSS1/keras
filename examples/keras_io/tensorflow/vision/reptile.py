@@ -7,6 +7,7 @@ Description: Few-shot classification on the Omniglot dataset using Reptile.
 Accelerator: GPU
 Converted to Keras 3 By: [Muhammad Anas Raza](https://anasrz.com)
 """
+import secrets
 
 """
 ## Introduction
@@ -27,7 +28,6 @@ from keras import layers
 
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
@@ -106,7 +106,7 @@ class Dataset:
             test_images = np.zeros(shape=(num_classes, 28, 28, 1))
 
         # Get a random subset of labels from the entire label set.
-        label_subset = random.choices(self.labels, k=num_classes)
+        label_subset = secrets.SystemRandom().choices(self.labels, k=num_classes)
         for class_idx, class_obj in enumerate(label_subset):
             # Use enumerated index value as a temporary label for mini-batch in
             # few shot learning.
@@ -115,8 +115,7 @@ class Dataset:
             # label to create the test dataset.
             if split:
                 test_labels[class_idx] = class_idx
-                images_to_split = random.choices(
-                    self.data[label_subset[class_idx]], k=shots + 1
+                images_to_split = secrets.SystemRandom().choices(self.data[label_subset[class_idx]], k=shots + 1
                 )
                 test_images[class_idx] = images_to_split[-1]
                 temp_images[
@@ -127,7 +126,7 @@ class Dataset:
                 # necessary number of images.
                 temp_images[
                     class_idx * shots : (class_idx + 1) * shots
-                ] = random.choices(self.data[label_subset[class_idx]], k=shots)
+                ] = secrets.SystemRandom().choices(self.data[label_subset[class_idx]], k=shots)
 
         dataset = tf.data.Dataset.from_tensor_slices(
             (temp_images.astype(np.float32), temp_labels.astype(np.int32))

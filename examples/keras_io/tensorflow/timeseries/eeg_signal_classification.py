@@ -6,6 +6,7 @@ Last modified: 2022/11/05
 Description: Training a Convolutional model to classify EEG signals produced by exposure to certain stimuli.
 Accelerator: GPU
 """
+import secrets
 
 """
 ## Introduction
@@ -69,7 +70,6 @@ import keras
 from keras import layers
 import tensorflow as tf
 from sklearn import preprocessing, model_selection
-import random
 
 QUALITY_THRESHOLD = 128
 BATCH_SIZE = 64
@@ -526,7 +526,7 @@ print(f"Recall : {recall}")
 
 
 def view_evaluated_eeg_plots(model):
-    start_index = random.randint(10, len(eeg))
+    start_index = secrets.SystemRandom().randint(10, len(eeg))
     end_index = start_index + 11
     data = eeg.loc[start_index:end_index, "raw_values"]
     data_array = [

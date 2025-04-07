@@ -1,4 +1,3 @@
-import random as python_random
 
 import numpy as np
 
@@ -6,6 +5,7 @@ from keras import backend
 from keras.api_export import keras_export
 from keras.backend.common import global_state
 from keras.utils import jax_utils
+import secrets
 
 
 @keras_export("keras.random.SeedGenerator")
@@ -109,7 +109,7 @@ def global_seed_generator():
 
 
 def make_default_seed():
-    return python_random.randint(1, int(1e9))
+    return secrets.SystemRandom().randint(1, int(1e9))
 
 
 def draw_seed(seed):

@@ -7,6 +7,8 @@ Last modified: 2023/07/15
 Description: Implementing the MIRNet architecture for low-light image enhancement.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Introduction
 
@@ -40,8 +42,6 @@ pip install -q git+https://github.com/keras-team/keras
 import os
 
 os.environ["KERAS_BACKEND"] = "tensorflow"
-
-import random
 import numpy as np
 from glob import glob
 from PIL import Image, ImageOps
@@ -66,7 +66,7 @@ We generate random crops of size `128 x 128` from the image pairs to be
 used for both training and validation.
 """
 
-random.seed(10)
+secrets.SystemRandom().seed(10)
 
 IMAGE_SIZE = 128
 BATCH_SIZE = 4
@@ -522,7 +522,7 @@ and try the demo on [Hugging Face Spaces](https://huggingface.co/spaces/keras-io
 """
 
 
-for low_light_image in random.sample(test_low_light_images, 6):
+for low_light_image in secrets.SystemRandom().sample(test_low_light_images, 6):
     original_image = Image.open(low_light_image)
     enhanced_image = infer(original_image)
     plot_results(
