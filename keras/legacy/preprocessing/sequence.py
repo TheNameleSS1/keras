@@ -1,12 +1,12 @@
 """Deprecated sequence preprocessing APIs from Keras 1."""
 
 import json
-import random
 
 import numpy as np
 
 from keras.api_export import keras_export
 from keras.trainers.data_adapters.py_dataset_adapter import PyDataset
+import secrets
 
 
 @keras_export("keras._legacy.preprocessing.sequence.TimeseriesGenerator")
@@ -279,7 +279,7 @@ def skipgrams(
         if not wi:
             continue
         if sampling_table is not None:
-            if sampling_table[wi] < random.random():
+            if sampling_table[wi] < secrets.SystemRandom().random():
                 continue
 
         window_start = max(0, i - window_size)
@@ -298,10 +298,10 @@ def skipgrams(
     if negative_samples > 0:
         num_negative_samples = int(len(labels) * negative_samples)
         words = [c[0] for c in couples]
-        random.shuffle(words)
+        secrets.SystemRandom().shuffle(words)
 
         couples += [
-            [words[i % len(words)], random.randint(1, vocabulary_size - 1)]
+            [words[i % len(words)], secrets.SystemRandom().randint(1, vocabulary_size - 1)]
             for i in range(num_negative_samples)
         ]
         if categorical:
@@ -311,10 +311,10 @@ def skipgrams(
 
     if shuffle:
         if seed is None:
-            seed = random.randint(0, 10e6)
-        random.seed(seed)
-        random.shuffle(couples)
-        random.seed(seed)
-        random.shuffle(labels)
+            seed = secrets.SystemRandom().randint(0, 10e6)
+        secrets.SystemRandom().seed(seed)
+        secrets.SystemRandom().shuffle(couples)
+        secrets.SystemRandom().seed(seed)
+        secrets.SystemRandom().shuffle(labels)
 
     return couples, labels

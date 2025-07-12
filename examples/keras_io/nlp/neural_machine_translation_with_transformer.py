@@ -6,6 +6,8 @@ Last modified: 2023/02/25
 Description: Implementing a sequence-to-sequence Transformer and training it on a machine translation task.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Introduction
 
@@ -45,7 +47,6 @@ import os
 os["KERAS_BACKEND"] = "tensorflow"
 
 import pathlib
-import random
 import string
 import re
 import numpy as np
@@ -93,14 +94,14 @@ Here's what our sentence pairs look like:
 """
 
 for _ in range(5):
-    print(random.choice(text_pairs))
+    print(secrets.choice(text_pairs))
 
 """
 Now, let's split the sentence pairs into a training set, a validation set,
 and a test set.
 """
 
-random.shuffle(text_pairs)
+secrets.SystemRandom().shuffle(text_pairs)
 num_val_samples = int(0.15 * len(text_pairs))
 num_train_samples = len(text_pairs) - 2 * num_val_samples
 train_pairs = text_pairs[:num_train_samples]
@@ -464,7 +465,7 @@ def decode_sequence(input_sentence):
 
 test_eng_texts = [pair[0] for pair in test_pairs]
 for _ in range(30):
-    input_sentence = random.choice(test_eng_texts)
+    input_sentence = secrets.choice(test_eng_texts)
     translated = decode_sequence(input_sentence)
 
 """

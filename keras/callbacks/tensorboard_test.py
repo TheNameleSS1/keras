@@ -1,6 +1,5 @@
 import collections
 import os
-import random
 
 import numpy as np
 import pytest
@@ -18,6 +17,7 @@ from keras import ops
 from keras import optimizers
 from keras import testing
 from keras.optimizers import schedules
+import secrets
 
 # Note: this file and tensorboard in general has a dependency on tensorflow
 
@@ -125,7 +125,7 @@ def list_summaries(logdir):
 class TestTensorBoardV2(testing.TestCase):
     def _get_log_dirs(self):
         logdir = os.path.join(
-            self.get_temp_dir(), str(random.randint(1, 1e7)), "tb"
+            self.get_temp_dir(), str(secrets.SystemRandom().randint(1, 1e7)), "tb"
         )
         train_dir = os.path.join(logdir, "train")
         validation_dir = os.path.join(logdir, "validation")

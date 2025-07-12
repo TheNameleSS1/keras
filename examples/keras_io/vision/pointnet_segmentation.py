@@ -6,6 +6,8 @@ Last modified: 2020/10/24
 Description: Implementation of a PointNet-based model for segmenting point clouds.
 Accelerator: GPU
 """
+import secrets
+
 """
 ## Introduction
 
@@ -35,7 +37,6 @@ for shape segmentation.
 
 import os
 import json
-import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -167,7 +168,7 @@ Next, we take a look at some samples from the in-memory arrays we just generated
 """
 
 for _ in range(5):
-    i = random.randint(0, len(point_clouds) - 1)
+    i = secrets.SystemRandom().randint(0, len(point_clouds) - 1)
     print(f"point_clouds[{i}].shape:", point_clouds[0].shape)
     print(f"point_cloud_labels[{i}].shape:", point_cloud_labels[0].shape)
     for j in range(5):
@@ -225,7 +226,7 @@ for index in tqdm(range(len(point_clouds))):
     current_labels = all_labels[index]
     num_points = len(current_point_cloud)
     # Randomly sampling respective indices.
-    sampled_indices = random.sample(list(range(num_points)), NUM_SAMPLE_POINTS)
+    sampled_indices = secrets.SystemRandom().sample(list(range(num_points)), NUM_SAMPLE_POINTS)
     # Sampling points corresponding to sampled indices.
     sampled_point_cloud = np.array([current_point_cloud[i] for i in sampled_indices])
     # Sampling corresponding one-hot encoded labels.
